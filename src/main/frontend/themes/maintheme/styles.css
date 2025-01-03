@@ -1,0 +1,54 @@
+:root {
+    --primary-color: #000000; /* Replace with your desired primary color */
+    --secondary-color: #ffffff; /* Replace with your desired secondary color */
+    --font-family: 'Monospace'; /* Replace with your desired font */
+}
+/* main components */
+H1{
+    font-size: 100px;
+    font-weight: 900;
+    margin: 0;
+    padding: 0;
+    color: var(--secondary-color);
+}
+H4{
+    font-size: 20px;
+    font-weight: 900;
+    margin: 0;
+    padding: 0;
+    color: var(--secondary-color);
+}
+.header-landing-bar{
+    border: 1px solid var(--secondary-color);
+    padding: 10px;
+}
+.landing-page-button-big{
+    --vaadin-button-background: transparent; /* Animated gradient background */
+    --vaadin-button-text-color: var(--secondary-color);
+    --vaadin-button-border: 1px solid var(--secondary-color);
+    --vaadin-button-font-size: 25px;
+    --vaadin-button-height: 100px;
+    --vaadin-button-width: 100px;
+    --vaadin-button-border-radius: 0px;
+}
+.landing-page-button-small{
+    --vaadin-button-background: linear-gradient(45deg, #ff6b6b, #f7b733); /* Animated gradient background */
+    --vaadin-button-text-color: var(--secondary-color);
+    --vaadin-button-border: 1px solid var(--secondary-color);
+    --vaadin-button-border-radius: 0px;
+}
+.landing-page-button-small-transparent{
+    --vaadin-button-background: transparent; /* Animated gradient background */
+    --vaadin-button-text-color: var(--secondary-color);
+    --vaadin-button-border: 1px solid var(--secondary-color);
+    --vaadin-button-border-radius: 0px;
+}
+.landing-page {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-family: var(--font-family);
+}
+/* Add this new class for spacing */
+.spacing {
+    margin: 10px; /* Adjust the value as needed */
+}
