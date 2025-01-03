@@ -34,6 +34,24 @@ H6{
     padding: 0;
     color: var(--secondary-color);
 }
+.notification::part(overlay){
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-family: var(--font-family);
+    border: 1px;
+    border-style: solid;
+    border-color: var(--secondary-color);
+}
+.dialog::part(overlay){
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border-radius: 10px;
+    border-color: var(--secondary-color);
+    border-style: solid;
+}
+.dialog::part(backdrop){
+     background-color: transparent;
+ }
 /*landing page components*/
 .header-landing-bar{
     border: 1px solid var(--secondary-color);

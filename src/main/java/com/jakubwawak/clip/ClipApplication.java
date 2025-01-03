@@ -11,6 +11,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 import com.jakubwawak.clip.database.Database;
 import com.jakubwawak.clip.maintanance.Properties;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.spring.annotation.EnableVaadin;
 import com.vaadin.flow.theme.Theme;
@@ -71,5 +72,15 @@ public class ClipApplication extends SpringBootServletInitializer implements App
 
 		header = header + version + " " + build;
 		System.out.println(header);
+	}
+
+	/**
+	 * Function for showing a notification
+	 * @param message
+	 */
+	public static void showNotification(String message){
+		Notification noti = Notification.show(message);
+		noti.addClassName("notification");
+		noti.setPosition(Notification.Position.BOTTOM_END);
 	}
 }

@@ -6,6 +6,9 @@
 package com.jakubwawak.clip.frontend.components;
 
 import com.flowingcode.vaadin.addons.markdown.MarkdownEditor;
+
+import java.sql.Timestamp;
+
 import com.flowingcode.vaadin.addons.markdown.BaseMarkdownComponent.DataColorMode;
 import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.entity.Clip;
@@ -13,7 +16,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
-import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
@@ -201,6 +203,24 @@ public class ClipEditor extends VerticalLayout {
         lowerBar.add(left_layout, center_layout, right_layout);
 
         return lowerBar;
+    }
+
+    /**
+     * Function for saving or updating the clip
+     */
+    private void saveOrUpdateClip(){
+        if( cliptTitle.getValue().isEmpty() && markdownEditor.getContent().isEmpty() && clipType.getValue().isEmpty() ){
+            ClipApplication.showNotification("Please fill all the fields");
+            return;
+        }
+
+        clip.setClipTitle(cliptTitle.getValue());
+        clip.setClipRaw(markdownEditor.getContent());
+        clip.setClipExtension(clipType.getValue());
+        if ( newClip ){
+            clip.setClipCreatedAt(new Timestamp(System.currentTimeMillis()));
+        }
+        clip.setClipUpdatedAt(new Timestamp(System.currentTimeMillis()));
     }
 
     /**
