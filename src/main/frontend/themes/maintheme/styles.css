@@ -18,6 +18,13 @@ H4{
     padding: 0;
     color: var(--secondary-color);
 }
+H6{
+    font-size: 10px;
+    font-weight: 900;
+    margin: 0;
+    padding: 0;
+    color: var(--secondary-color);
+}
 .header-landing-bar{
     border: 1px solid var(--secondary-color);
     padding: 10px;
@@ -26,9 +33,8 @@ H4{
     --vaadin-button-background: transparent; /* Animated gradient background */
     --vaadin-button-text-color: var(--secondary-color);
     --vaadin-button-border: 1px solid var(--secondary-color);
-    --vaadin-button-font-size: 25px;
-    --vaadin-button-height: 100px;
-    --vaadin-button-width: 100px;
+    --vaadin-button-font-size: 100px;
+    --vaadin-button-height: 200px;
     --vaadin-button-border-radius: 0px;
 }
 .landing-page-button-small{
@@ -44,9 +50,20 @@ H4{
     --vaadin-button-border-radius: 0px;
 }
 .landing-page {
-    background-color: var(--primary-color);
+    background: radial-gradient(circle, black, darkblue, pink);
+    background-size: 300% 300%;
+    animation: gradient-spin 5s ease infinite alternate;
     color: var(--secondary-color);
     font-family: var(--font-family);
+}
+/* Add the keyframes for the spinning animation */
+@keyframes gradient-spin {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
 }
 /* Add this new class for spacing */
 .spacing {

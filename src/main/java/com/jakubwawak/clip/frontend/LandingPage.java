@@ -9,6 +9,7 @@ import com.jakubwawak.clip.ClipApplication;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
@@ -46,7 +47,6 @@ public class LandingPage extends VerticalLayout{
         landing_page_content.setAlignItems(Alignment.CENTER);
         landing_page_content.setJustifyContentMode(JustifyContentMode.CENTER);
 
-        landing_page_content.add(new H1("clip."));
         landing_page_content.add(new HorizontalLayout(createClipButton));
 
 
@@ -63,7 +63,7 @@ public class LandingPage extends VerticalLayout{
     void createButtons(){
         loginButton = new Button("login",VaadinIcon.USER.create());
         loginButton.addClassName("landing-page-button-small");    
-        createClipButton = new Button("",VaadinIcon.PLUS.create());
+        createClipButton = new Button("create clip",VaadinIcon.PLUS.create());
         createClipButton.addClassName("landing-page-button-big");
         goToClipLibrary = new Button("library",VaadinIcon.BOOK.create());
         goToClipLibrary.addClassName("landing-page-button-small-transparent");
@@ -81,9 +81,15 @@ public class LandingPage extends VerticalLayout{
         left_layout.setAlignItems(Alignment.CENTER);
         left_layout.setWidth("80%");
         left_layout.add();
-
         left_layout.add(new H4(ClipApplication.database.getServerName()));
 
+        FlexLayout center_layout = new FlexLayout();
+        center_layout.setSizeFull();
+        center_layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        center_layout.setAlignItems(FlexComponent.Alignment.CENTER);
+        center_layout.add(new H6("clip."));
+
+    
         FlexLayout right_layout = new FlexLayout();
         right_layout.setSizeFull();
         right_layout.setJustifyContentMode(JustifyContentMode.END);
@@ -96,7 +102,7 @@ public class LandingPage extends VerticalLayout{
 
         right_layout.add(goToClipLibrary, loginButton);
         
-        headerLandingBar.add(left_layout, right_layout);
+        headerLandingBar.add(left_layout, center_layout, right_layout);
 
         headerLandingBar.setWidthFull();
         headerLandingBar.addClassName("header-landing-bar");

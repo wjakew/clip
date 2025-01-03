@@ -91,8 +91,14 @@ CREATE TABLE IF NOT EXISTS clip
     
     clip_private BOOLEAN NOT NULL,
     clip_deleted BOOLEAN NOT NULL,
+
     clip_password VARCHAR(255) NOT NULL,
-    clip_password_salt VARCHAR(255) NOT NULL
+    clip_password_salt VARCHAR(255) NOT NULL,
+
+    clip_editor_password VARCHAR(255) NOT NULL,
+
+    clip_word_count INT NOT NULL
+    
 ) AUTO_INCREMENT = 1000000000;
 
 
