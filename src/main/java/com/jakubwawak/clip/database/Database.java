@@ -150,4 +150,8 @@ import java.time.LocalDateTime;
             System.out.println("Error logging to database ("+ex.toString()+")");
         }
     }
+
+    public Connection getConnection() {
+        return connection;
+    }
 }

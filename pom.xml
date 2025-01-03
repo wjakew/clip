@@ -52,6 +52,12 @@
 			<version>9.1.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.flowingcode.vaadin.addons</groupId>
+			<artifactId>markdown-editor-addon</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

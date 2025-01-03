@@ -3,6 +3,15 @@
     --secondary-color: #ffffff; /* Replace with your desired secondary color */
     --font-family: 'Monospace'; /* Replace with your desired font */
 }
+vaadin-icon{
+    color: var(--secondary-color);
+}
+vaadin-button{
+    font-family: var(--font-family);
+}
+vaadin-menu-bar-item{
+    font-family: var(--font-family);
+}
 /* main components */
 H1{
     font-size: 100px;
@@ -25,6 +34,7 @@ H6{
     padding: 0;
     color: var(--secondary-color);
 }
+/*landing page components*/
 .header-landing-bar{
     border: 1px solid var(--secondary-color);
     padding: 10px;
@@ -68,4 +78,34 @@ H6{
 /* Add this new class for spacing */
 .spacing {
     margin: 10px; /* Adjust the value as needed */
+}
+/* editor components */
+.clip-editor-component{
+    border: 1px solid var(--secondary-color);
+}
+.clip-editor-title{
+    --vaadin-input-field-border-color: var(--secondary-color);
+    --vaadin-input-field-border-width: 1px;
+    --vaadin-input-field-value-color: var(--secondary-color);
+    --vaadin-input-field-placeholder-color: var(--secondary-color);
+    font-family: var(--font-family);
+}
+.clip-editor-clip-type{
+    --vaadin-input-field-border-color: var(--secondary-color);
+    --vaadin-input-field-border-width: 1px;
+    --vaadin-input-field-value-color: var(--secondary-color);
+    --vaadin-input-field-placeholder-color: var(--secondary-color);
+    font-family: var(--font-family);
+}
+.menubar{
+    --vaadin-button-background: transparent; /* Animated gradient background */
+    --vaadin-button-text-color: var(--secondary-color);
+    --vaadin-button-border: 1px solid var(--secondary-color);
+    --vaadin-button-border-radius: 0px;
+}
+.button-small{
+    --vaadin-button-background: transparent; /* Animated gradient background */
+    --vaadin-button-text-color: var(--secondary-color);
+    --vaadin-button-border: 1px solid var(--secondary-color);
+    --vaadin-button-border-radius: 0px;
 }

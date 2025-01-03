@@ -6,8 +6,9 @@
 package com.jakubwawak.clip.frontend;
 
 import com.jakubwawak.clip.ClipApplication;
+import com.jakubwawak.clip.frontend.components.ClipEditor;
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -63,7 +64,7 @@ public class LandingPage extends VerticalLayout{
     void createButtons(){
         loginButton = new Button("login",VaadinIcon.USER.create());
         loginButton.addClassName("landing-page-button-small");    
-        createClipButton = new Button("create clip",VaadinIcon.PLUS.create());
+        createClipButton = new Button("create clip",VaadinIcon.PLUS.create(),this::createClipAction);
         createClipButton.addClassName("landing-page-button-big");
         goToClipLibrary = new Button("library",VaadinIcon.BOOK.create());
         goToClipLibrary.addClassName("landing-page-button-small-transparent");
@@ -106,5 +107,18 @@ public class LandingPage extends VerticalLayout{
 
         headerLandingBar.setWidthFull();
         headerLandingBar.addClassName("header-landing-bar");
+    }
+
+    /**
+     * Action for creating a clip
+     */
+    private void createClipAction(ClickEvent<Button> event){
+        removeAll();
+        
+        add(headerLandingBar);
+
+        ClipEditor clipEditor = new ClipEditor(null, null,false);
+        
+        add(clipEditor);
     }
 }

@@ -74,6 +74,19 @@ CREATE TABLE IF NOT EXISTS user_session
     CONSTRAINT fk_user_session_user FOREIGN KEY (user_id) REFERENCES user(id)
 ) AUTO_INCREMENT = 1;
 
+-- user_notifications table to store user notifications
+CREATE TABLE IF NOT EXISTS user_notifications
+(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    notification_type VARCHAR(255) NOT NULL,
+    notification_message TEXT NOT NULL,
+    notification_created_at TIMESTAMP NOT NULL,
+    notification_read BOOLEAN NOT NULL,
+
+    CONSTRAINT fk_user_notifications_user FOREIGN KEY (user_id) REFERENCES user(id)
+) AUTO_INCREMENT = 1;
+
 -- clips table to store clips
 CREATE TABLE IF NOT EXISTS clip
 (
@@ -97,8 +110,23 @@ CREATE TABLE IF NOT EXISTS clip
 
     clip_editor_password VARCHAR(255) NOT NULL,
 
-    clip_word_count INT NOT NULL
+    clip_word_count INT NOT NULL,
+    clip_reactions_count INT NOT NULL
     
 ) AUTO_INCREMENT = 1000000000;
+
+-- user_blog_collection table to store user blog collection
+CREATE TABLE IF NOT EXISTS user_blog_collection
+(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    clip_id INT NOT NULL,
+    blog_content_comments TEXT NOT NULL,
+    blog_visible BOOLEAN NOT NULL,
+    blog_content_created_at TIMESTAMP NOT NULL,
+
+    CONSTRAINT fk_user_blog_collection_user FOREIGN KEY (user_id) REFERENCES user(id),
+    CONSTRAINT fk_user_blog_collection_clip FOREIGN KEY (clip_id) REFERENCES clip(id)
+);
 
 
