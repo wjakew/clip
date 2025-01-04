@@ -12,6 +12,8 @@ import java.sql.Timestamp;
 import com.flowingcode.vaadin.addons.markdown.BaseMarkdownComponent.DataColorMode;
 import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.entity.Clip;
+import com.jakubwawak.clip.frontend.windows.PublishWindow;
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.contextmenu.MenuItem;
@@ -95,7 +97,7 @@ public class ClipEditor extends VerticalLayout {
         SubMenu settingsSubMenu = settings.getSubMenu();
         settingsSubMenu.addItem("Show Statistics");
 
-        publishButton = new Button("Publish",VaadinIcon.UPLOAD.create());
+        publishButton = new Button("Publish",VaadinIcon.UPLOAD.create(),this::saveOrUpdateClip);
         publishButton.addClassName("landing-page-button-small");
 
         if ( !newClip ){
@@ -208,7 +210,7 @@ public class ClipEditor extends VerticalLayout {
     /**
      * Function for saving or updating the clip
      */
-    private void saveOrUpdateClip(){
+    private void saveOrUpdateClip(ClickEvent<Button> event){
         if( cliptTitle.getValue().isEmpty() && markdownEditor.getContent().isEmpty() && clipType.getValue().isEmpty() ){
             ClipApplication.showNotification("Please fill all the fields");
             return;
@@ -221,6 +223,10 @@ public class ClipEditor extends VerticalLayout {
             clip.setClipCreatedAt(new Timestamp(System.currentTimeMillis()));
         }
         clip.setClipUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+        PublishWindow publishWindow = new PublishWindow(clip, userSessionToken, proMode, newClip);
+        add(publishWindow.main_dialog);
+        publishWindow.main_dialog.open();
     }
 
     /**

@@ -6,9 +6,19 @@
 package com.jakubwawak.clip.frontend.windows;
 
 import com.jakubwawak.clip.entity.Clip;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
+import com.vaadin.flow.component.orderedlayout.FlexLayout;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
 
 /**
  * Window for logging user to the app
@@ -26,14 +36,26 @@ public class PublishWindow {
 
     private Clip clip;
     private String userSessionToken;
+    private boolean proMode;
+    private boolean isNewClip;
+
+    private TextField clipTitle;
+    private Checkbox clipPrivate;
+
+
+    private Checkbox passwordProtected;
+    private PasswordField passwordField;
+
+    private Button publishButton;
 
     /**
      * Constructor
      */
-    public PublishWindow(Clip clip, String userSessionToken){
+    public PublishWindow(Clip clip, String userSessionToken, boolean proMode,boolean isNewClip){
         this.clip = clip;
         this.userSessionToken = userSessionToken;
-
+        this.proMode = proMode;
+        this.isNewClip = isNewClip;
         main_dialog = new Dialog();
         main_dialog.addClassName("dialog");
 
@@ -46,6 +68,38 @@ public class PublishWindow {
      */
     void prepare_components(){
         // set components
+        clipTitle = new TextField();
+        clipTitle.setPlaceholder("title");
+        clipTitle.setPrefixComponent(VaadinIcon.FLAG.create());
+        clipTitle.setWidth("100%");
+        clipTitle.addClassName("clip-editor-title");
+        clipTitle.setValue(clip.getClipTitle());
+
+        clipPrivate = new Checkbox();
+        clipPrivate.setLabel("Make private");
+        clipPrivate.setValue(clip.isClipPrivate());
+        clipPrivate.setTooltipText("If selected, the clip will not be visible in the library");
+
+        passwordProtected = new Checkbox();
+        passwordProtected.setLabel("Password protected");
+        passwordProtected.setValue(clip.getClipPassword() != null);
+        passwordProtected.setTooltipText("If selected, the clip will be password protected");
+
+        passwordProtected.addValueChangeListener(event -> {
+            passwordField.setVisible(passwordProtected.getValue());
+        });
+    
+
+        passwordField = new PasswordField();
+        passwordField.setPlaceholder("password");
+        passwordField.addClassName("clip-editor-password");
+        passwordField.setWidth("100%");
+        passwordField.setValue(clip.getClipPassword());
+        passwordField.setVisible(passwordProtected.getValue());
+        passwordField.addClassName("clip-editor-password");
+
+        publishButton = new Button("Publish");
+        publishButton.addClassName("landing-page-button-small");
     }
 
     /**
@@ -54,6 +108,35 @@ public class PublishWindow {
     void prepare_dialog(){
         prepare_components();
         // set layout
+
+        main_layout.add(new H4("Publish"));
+        main_layout.add(clipTitle);
+        main_layout.add(passwordProtected);
+        main_layout.add(passwordField);
+        
+        HorizontalLayout buttons_layout = new HorizontalLayout();
+        buttons_layout.setWidth("100%");
+        buttons_layout.setJustifyContentMode(JustifyContentMode.CENTER);
+        buttons_layout.setAlignItems(Alignment.CENTER);
+
+        FlexLayout left_layout = new FlexLayout();
+        left_layout.setSizeFull();
+        left_layout.setJustifyContentMode(JustifyContentMode.START);
+        left_layout.setAlignItems(Alignment.CENTER);
+        left_layout.setWidth("80%");
+
+        FlexLayout right_layout = new FlexLayout();
+        right_layout.setSizeFull();
+        right_layout.setJustifyContentMode(JustifyContentMode.END);
+        right_layout.setAlignItems(Alignment.CENTER);
+        right_layout.setWidth("80%");
+
+        left_layout.add(clipPrivate);
+        right_layout.add(publishButton);
+
+        buttons_layout.add(left_layout, right_layout);
+
+        main_layout.add(buttons_layout);
 
         main_layout.setSizeFull();
         main_layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);

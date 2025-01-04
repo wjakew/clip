@@ -12,6 +12,13 @@ vaadin-button{
 vaadin-menu-bar-item{
     font-family: var(--font-family);
 }
+vaadin-checkbox{
+    font-family: var(--font-family);
+    color: var(--secondary-color);
+    --vaadin-checkbox-background: var(--secondary-color);
+    --vaadin-checkbox-background-hover: orange;
+    --vaadin-checkbox-checkmark-color: orange;
+}
 /* main components */
 H1{
     font-size: 100px;
