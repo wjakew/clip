@@ -5,7 +5,11 @@
  */
 package com.jakubwawak.clip.frontend.windows;
 
+import java.sql.Timestamp;
+
+import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.entity.Clip;
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -95,11 +99,18 @@ public class PublishWindow {
         passwordField.addClassName("clip-editor-password");
         passwordField.setWidth("100%");
         passwordField.setValue(clip.getClipPassword());
-        passwordField.setVisible(passwordProtected.getValue());
+        passwordField.setVisible(false);
         passwordField.addClassName("clip-editor-password");
 
         publishButton = new Button("Publish");
         publishButton.addClassName("landing-page-button-small");
+
+        if ( !proMode ) {
+            if (clip.getClipRaw().length() > 1000){
+                publishButton.setEnabled(false);
+                publishButton.setText("Upgrade to pro to publish");
+            }
+        }
     }
 
     /**
@@ -148,5 +159,25 @@ public class PublishWindow {
         main_layout.getStyle().set("--lumo-font-family","Monospace");
         main_dialog.add(main_layout);
         main_dialog.setWidth(width);main_dialog.setHeight(height);
+    }
+
+    /**
+     * Function for publishing the clip
+     */
+    private void publishClip(ClickEvent<Button> event){
+        if(clipTitle.getValue().isEmpty()){
+            ClipApplication.showNotification("Please fill all the fields");
+            return;
+        }
+
+        if ( passwordProtected.getValue() && passwordField.getValue().isEmpty() ){
+            ClipApplication.showNotification("Please fill all the fields");
+            return;
+        }
+        else{
+            clip.setClipPassword(passwordField.getValue());
+            clip.setClipUpdatedAt(new Timestamp(System.currentTimeMillis()));
+            clip.setClipPrivate(clipPrivate.getValue());
+        }
     }
 }
