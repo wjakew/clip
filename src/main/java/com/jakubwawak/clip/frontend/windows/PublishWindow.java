@@ -8,6 +8,7 @@ package com.jakubwawak.clip.frontend.windows;
 import java.sql.Timestamp;
 
 import com.jakubwawak.clip.ClipApplication;
+import com.jakubwawak.clip.database.DatabaseClip;
 import com.jakubwawak.clip.entity.Clip;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
@@ -93,7 +94,6 @@ public class PublishWindow {
             passwordField.setVisible(passwordProtected.getValue());
         });
     
-
         passwordField = new PasswordField();
         passwordField.setPlaceholder("password");
         passwordField.addClassName("clip-editor-password");
@@ -102,7 +102,7 @@ public class PublishWindow {
         passwordField.setVisible(false);
         passwordField.addClassName("clip-editor-password");
 
-        publishButton = new Button("Publish");
+        publishButton = new Button("Publish",this::publishClip);
         publishButton.addClassName("landing-page-button-small");
 
         if ( !proMode ) {
@@ -165,6 +165,7 @@ public class PublishWindow {
      * Function for publishing the clip
      */
     private void publishClip(ClickEvent<Button> event){
+        DatabaseClip databaseClip = new DatabaseClip();
         if(clipTitle.getValue().isEmpty()){
             ClipApplication.showNotification("Please fill all the fields");
             return;
@@ -178,6 +179,29 @@ public class PublishWindow {
             clip.setClipPassword(passwordField.getValue());
             clip.setClipUpdatedAt(new Timestamp(System.currentTimeMillis()));
             clip.setClipPrivate(clipPrivate.getValue());
+
+            // TODO: create edit password for enablind editing clip by user if not logged in
+
+
+            if ( userSessionToken != null ){
+            
+                // TODO: get user session token and update user data 
+            
+            }
+
+            if ( isNewClip ){
+                int ans = databaseClip.createClip(clip);
+                if ( ans == 1 ){
+                    ClipApplication.showNotification("Clip created successfully");
+                }
+                else{
+                    ClipApplication.showNotification("Failed to create clip");
+                }
+            }
+            else{
+                databaseClip.updateClip(clip);
+            }
         }
     }
 }
+

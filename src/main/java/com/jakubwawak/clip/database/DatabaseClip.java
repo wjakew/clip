@@ -101,4 +101,27 @@ public class DatabaseClip {
             return 0;
         }
     }
+
+    /**
+     * Function for updating a clip
+     * @param clip - the clip to update
+     * @return 1 if the clip was updated successfully, 0 if it failed
+     */
+    public int updateClip(Clip clip){
+        String sql = "UPDATE clip SET clip_title = ?, clip_raw = ?, clip_extension = ?, clip_updated_at = ?, clip_private = ?, clip_deleted = ?, clip_password = ?, clip_password_salt = ?, clip_editor_password = ?, clip_word_count = ?, clip_reactions_count = ? WHERE clip_url = ?";
+        try (PreparedStatement pstmt = database.getConnection().prepareStatement(sql)) {
+            pstmt.setString(1, clip.getClipTitle());
+            pstmt.setString(2, clip.getClipRaw());
+            pstmt.setString(3, clip.getClipExtension());
+            pstmt.setTimestamp(4, clip.getClipUpdatedAt());
+            pstmt.setBoolean(5, clip.isClipPrivate());
+            pstmt.setBoolean(6, clip.isClipDeleted());
+            pstmt.execute();
+            database.log("Clip updated (" + clip.getClipUrl() + ")", "DB-CLIP");
+            return 1;
+        } catch (SQLException e) {
+            database.log("Failed to update clip (" + clip.getClipUrl() + ")", "DB-CLIP");
+            return 0;
+        }
+    }
 }
