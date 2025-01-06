@@ -141,3 +141,12 @@ H6{
     --vaadin-button-border: 1px solid var(--secondary-color);
     --vaadin-button-border-radius: 0px;
 }
+/* viewer page components */
+.viewer-page{
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-family: var(--font-family);
+}
+.clip-viewer{
+    border: 1px solid var(--secondary-color);
+}

@@ -110,7 +110,7 @@ public class PublishWindow {
         publishButton.addClassName("landing-page-button-small");
 
         if (!proMode) {
-            if (clip.getClipRaw().length() > 1000) {
+            if (clip.getClipRaw().length() > 250000) {
                 publishButton.setEnabled(false);
                 publishButton.setText("Upgrade to pro to publish");
             }
@@ -124,7 +124,13 @@ public class PublishWindow {
         prepare_components();
         // set layout
 
-        main_layout.add(new H4("Publish"));
+        if (isNewClip) {
+            main_layout.add(new H4("Publish"));
+            publishButton.setText("Publish");
+        } else {
+            main_layout.add(new H4("Update"));
+            publishButton.setText("Update");
+        }
         main_layout.add(clipTitle);
         main_layout.add(passwordProtected);
         main_layout.add(passwordField);

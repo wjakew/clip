@@ -47,7 +47,7 @@ public class ClipEditor extends VerticalLayout {
 
     private MarkdownEditor markdownEditor;
 
-    private H6 wordCount, createdAs;
+    private H6 wordCount, signsCount, createdAs;
 
     /**
      * Constructor for the ClipEditor class
@@ -104,11 +104,14 @@ public class ClipEditor extends VerticalLayout {
         }
 
         wordCount = new H6("words: " + clip.getClipWordCount());
+
         if (clip.getUserId() == 0) {
             createdAs = new H6("created as: guest");
         } else {
             createdAs = new H6("created as: " + clip.getUserId());
         }
+
+        signsCount = new H6("signs: " + clip.getClipRaw().length());
 
         clipType = new ComboBox<String>();
         clipType.addClassName("clip-editor-clip-type");
@@ -127,6 +130,7 @@ public class ClipEditor extends VerticalLayout {
             String contentRaw = this.markdownEditor.getContent();
             int wordCountValue = contentRaw.split("\\s+").length;
             wordCount.setText("words: " + wordCountValue);
+            signsCount.setText("signs: " + contentRaw.length());
         });
 
         if (proMode) {
@@ -200,7 +204,7 @@ public class ClipEditor extends VerticalLayout {
         right_layout.setWidth("80%");
 
         left_layout.add(clipType, createdAs);
-        right_layout.add(wordCount);
+        right_layout.add(wordCount, new H6("/"), signsCount);
         lowerBar.add(left_layout, center_layout, right_layout);
 
         return lowerBar;

@@ -121,12 +121,38 @@ public class DatabaseClip {
             pstmt.setTimestamp(4, clip.getClipUpdatedAt());
             pstmt.setBoolean(5, clip.isClipPrivate());
             pstmt.setBoolean(6, clip.isClipDeleted());
+            pstmt.setString(7, clip.getClipPassword());
+            pstmt.setString(8, clip.getClipPasswordSalt());
+            pstmt.setString(9, clip.getClipEditorPassword());
+            pstmt.setInt(10, clip.getClipWordCount());
+            pstmt.setInt(11, clip.getClipReactionsCount());
+            pstmt.setString(12, clip.getClipUrl());
             pstmt.execute();
             database.log("Clip updated (" + clip.getClipUrl() + ")", "DB-CLIP");
             return 1;
         } catch (SQLException e) {
-            database.log("Failed to update clip (" + clip.getClipUrl() + ")", "DB-CLIP");
+            database.log("Failed to update clip (" + clip.getClipUrl() + ") - " + e.getMessage(), "DB-CLIP");
             return 0;
         }
+    }
+
+    /**
+     * Function for getting a clip by its url
+     * 
+     * @param clipUrl - the url of the clip
+     * @return the clip
+     */
+    public Clip getClipByUrl(String clipUrl) {
+        String sql = "SELECT * FROM clip WHERE clip_url = ?";
+        try (PreparedStatement pstmt = database.getConnection().prepareStatement(sql)) {
+            pstmt.setString(1, clipUrl);
+            ResultSet resultSet = pstmt.executeQuery();
+            if (resultSet.next()) {
+                return new Clip(resultSet);
+            }
+        } catch (SQLException e) {
+            database.log("Failed to get clip by url (" + clipUrl + ")", "DB-CLIP");
+        }
+        return null;
     }
 }

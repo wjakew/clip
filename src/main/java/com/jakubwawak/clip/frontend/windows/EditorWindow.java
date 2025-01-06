@@ -6,42 +6,39 @@
 package com.jakubwawak.clip.frontend.windows;
 
 import com.jakubwawak.clip.entity.Clip;
-import com.jakubwawak.clip.frontend.ViewerPage;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
+import com.jakubwawak.clip.frontend.components.ClipEditor;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.H4;
-import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 /**
  * Window for logging user to the app
  */
-public class PublishSummaryWindow {
+public class EditorWindow {
 
     // variables for setting x and y of window
-    public String width = "";
-    public String height = "";
+    public String width = "90%";
+    public String height = "90%";
     public String backgroundStyle = "";
 
     // main login components
     public Dialog main_dialog;
     VerticalLayout main_layout;
 
+    String userSessionToken;
+    boolean proMode;
+
     Clip clip;
 
-    Button copyLinkButton;
-    Button goToViewerButton;
-
-    Button closeButton;
+    ClipEditor clipEditor;
 
     /**
      * Constructor
      */
-    public PublishSummaryWindow(Clip clip) {
+    public EditorWindow(Clip clip, String userSessionToken, boolean proMode) {
         this.clip = clip;
+        this.userSessionToken = userSessionToken;
+        this.proMode = proMode;
         main_dialog = new Dialog();
         main_dialog.addClassName("dialog");
 
@@ -54,22 +51,7 @@ public class PublishSummaryWindow {
      */
     void prepare_components() {
         // set components
-        copyLinkButton = new Button("Copy");
-        copyLinkButton.addClassName("landing-page-button-small-transparent");
-
-        goToViewerButton = new Button("Viewer");
-        goToViewerButton.addClassName("landing-page-button-small");
-
-        goToViewerButton.addClickListener(e -> {
-            UI.getCurrent().navigate(ViewerPage.class, clip.getClipUrl());
-        });
-
-        closeButton = new Button("Close");
-        closeButton.addClassName("landing-page-button-small-transparent");
-
-        closeButton.addClickListener(e -> {
-            main_dialog.close();
-        });
+        clipEditor = new ClipEditor(clip, userSessionToken, proMode);
     }
 
     /**
@@ -78,20 +60,7 @@ public class PublishSummaryWindow {
     void prepare_dialog() {
         prepare_components();
         // set layout
-        main_layout.add(new H4("Your Clip is live!"));
-        main_layout.add(new H6("Your Password:"));
-
-        H4 password = new H4(clip.getClipEditorPassword());
-        password.getStyle().set("color", "orange");
-        password.getStyle().set("font-weight", "bold");
-        password.getStyle().set("font-size", "1.5em");
-
-        main_layout.add(password);
-
-        main_layout.add(new HorizontalLayout(copyLinkButton, goToViewerButton));
-
-        main_layout.add(closeButton);
-
+        main_layout.add(clipEditor);
         main_layout.setSizeFull();
         main_layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         main_layout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);

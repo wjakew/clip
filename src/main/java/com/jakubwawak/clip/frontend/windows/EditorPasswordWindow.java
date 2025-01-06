@@ -5,21 +5,22 @@
  */
 package com.jakubwawak.clip.frontend.windows;
 
+import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.entity.Clip;
-import com.jakubwawak.clip.frontend.ViewerPage;
-import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H4;
-import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.PasswordField;
 
 /**
  * Window for logging user to the app
  */
-public class PublishSummaryWindow {
+public class EditorPasswordWindow {
 
     // variables for setting x and y of window
     public String width = "";
@@ -32,15 +33,14 @@ public class PublishSummaryWindow {
 
     Clip clip;
 
-    Button copyLinkButton;
-    Button goToViewerButton;
+    PasswordField passwordField;
 
-    Button closeButton;
+    Button submitButton;
 
     /**
      * Constructor
      */
-    public PublishSummaryWindow(Clip clip) {
+    public EditorPasswordWindow(Clip clip) {
         this.clip = clip;
         main_dialog = new Dialog();
         main_dialog.addClassName("dialog");
@@ -54,22 +54,13 @@ public class PublishSummaryWindow {
      */
     void prepare_components() {
         // set components
-        copyLinkButton = new Button("Copy");
-        copyLinkButton.addClassName("landing-page-button-small-transparent");
+        passwordField = new PasswordField();
+        passwordField.setPlaceholder("password");
+        passwordField.addClassName("clip-editor-title");
+        passwordField.setWidth("100%");
 
-        goToViewerButton = new Button("Viewer");
-        goToViewerButton.addClassName("landing-page-button-small");
-
-        goToViewerButton.addClickListener(e -> {
-            UI.getCurrent().navigate(ViewerPage.class, clip.getClipUrl());
-        });
-
-        closeButton = new Button("Close");
-        closeButton.addClassName("landing-page-button-small-transparent");
-
-        closeButton.addClickListener(e -> {
-            main_dialog.close();
-        });
+        submitButton = new Button("Unlock", VaadinIcon.KEY.create(), this::submitPassword);
+        submitButton.addClassName("landing-page-button-small");
     }
 
     /**
@@ -78,19 +69,9 @@ public class PublishSummaryWindow {
     void prepare_dialog() {
         prepare_components();
         // set layout
-        main_layout.add(new H4("Your Clip is live!"));
-        main_layout.add(new H6("Your Password:"));
-
-        H4 password = new H4(clip.getClipEditorPassword());
-        password.getStyle().set("color", "orange");
-        password.getStyle().set("font-weight", "bold");
-        password.getStyle().set("font-size", "1.5em");
-
-        main_layout.add(password);
-
-        main_layout.add(new HorizontalLayout(copyLinkButton, goToViewerButton));
-
-        main_layout.add(closeButton);
+        main_dialog.add(new HorizontalLayout(VaadinIcon.LOCK.create(), new H4("Editor Locked")));
+        main_layout.add(passwordField);
+        main_layout.add(submitButton);
 
         main_layout.setSizeFull();
         main_layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
@@ -103,5 +84,20 @@ public class PublishSummaryWindow {
         main_dialog.add(main_layout);
         main_dialog.setWidth(width);
         main_dialog.setHeight(height);
+    }
+
+    /**
+     * Function for submitting the password
+     */
+    private void submitPassword(ClickEvent<Button> event) {
+        if (passwordField.getValue().equals(clip.getClipEditorPassword())) {
+            main_dialog.close();
+            // open editor window
+            EditorWindow editorWindow = new EditorWindow(clip, "", false);
+            editorWindow.main_dialog.open();
+
+        } else {
+            ClipApplication.showNotification("Wrong password!");
+        }
     }
 }
