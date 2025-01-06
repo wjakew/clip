@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.database.DatabaseClip;
 import com.jakubwawak.clip.entity.Clip;
+import com.jakubwawak.clip.frontend.components.ClipEditor;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -47,20 +48,23 @@ public class PublishWindow {
     private TextField clipTitle;
     private Checkbox clipPrivate;
 
-
     private Checkbox passwordProtected;
     private PasswordField passwordField;
 
     private Button publishButton;
 
+    private ClipEditor clipEditor;
+
     /**
      * Constructor
      */
-    public PublishWindow(Clip clip, String userSessionToken, boolean proMode,boolean isNewClip){
+    public PublishWindow(Clip clip, String userSessionToken, boolean proMode, boolean isNewClip,
+            ClipEditor clipEditor) {
         this.clip = clip;
         this.userSessionToken = userSessionToken;
         this.proMode = proMode;
         this.isNewClip = isNewClip;
+        this.clipEditor = clipEditor;
         main_dialog = new Dialog();
         main_dialog.addClassName("dialog");
 
@@ -71,7 +75,7 @@ public class PublishWindow {
     /**
      * Function for preparing components
      */
-    void prepare_components(){
+    void prepare_components() {
         // set components
         clipTitle = new TextField();
         clipTitle.setPlaceholder("title");
@@ -87,26 +91,26 @@ public class PublishWindow {
 
         passwordProtected = new Checkbox();
         passwordProtected.setLabel("Password protected");
-        passwordProtected.setValue(clip.getClipPassword() != null);
+        passwordProtected.setValue(false);
         passwordProtected.setTooltipText("If selected, the clip will be password protected");
 
         passwordProtected.addValueChangeListener(event -> {
             passwordField.setVisible(passwordProtected.getValue());
         });
-    
+
         passwordField = new PasswordField();
         passwordField.setPlaceholder("password");
-        passwordField.addClassName("clip-editor-password");
+        passwordField.addClassName("clip-editor-title");
         passwordField.setWidth("100%");
         passwordField.setValue(clip.getClipPassword());
         passwordField.setVisible(false);
         passwordField.addClassName("clip-editor-password");
 
-        publishButton = new Button("Publish",this::publishClip);
+        publishButton = new Button("Publish", this::publishClip);
         publishButton.addClassName("landing-page-button-small");
 
-        if ( !proMode ) {
-            if (clip.getClipRaw().length() > 1000){
+        if (!proMode) {
+            if (clip.getClipRaw().length() > 1000) {
                 publishButton.setEnabled(false);
                 publishButton.setText("Upgrade to pro to publish");
             }
@@ -116,7 +120,7 @@ public class PublishWindow {
     /**
      * Function for preparing layout
      */
-    void prepare_dialog(){
+    void prepare_dialog() {
         prepare_components();
         // set layout
 
@@ -124,7 +128,7 @@ public class PublishWindow {
         main_layout.add(clipTitle);
         main_layout.add(passwordProtected);
         main_layout.add(passwordField);
-        
+
         HorizontalLayout buttons_layout = new HorizontalLayout();
         buttons_layout.setWidth("100%");
         buttons_layout.setJustifyContentMode(JustifyContentMode.CENTER);
@@ -154,54 +158,63 @@ public class PublishWindow {
         main_layout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         main_layout.getStyle().set("text-align", "center");
 
-        main_layout.getStyle().set("border-radius","25px");
-        main_layout.getStyle().set("background-color",backgroundStyle);
-        main_layout.getStyle().set("--lumo-font-family","Monospace");
+        main_layout.getStyle().set("border-radius", "25px");
+        main_layout.getStyle().set("background-color", backgroundStyle);
+        main_layout.getStyle().set("--lumo-font-family", "Monospace");
         main_dialog.add(main_layout);
-        main_dialog.setWidth(width);main_dialog.setHeight(height);
+        main_dialog.setWidth(width);
+        main_dialog.setHeight(height);
     }
 
     /**
      * Function for publishing the clip
      */
-    private void publishClip(ClickEvent<Button> event){
+    private void publishClip(ClickEvent<Button> event) {
         DatabaseClip databaseClip = new DatabaseClip();
-        if(clipTitle.getValue().isEmpty()){
+        if (clipTitle.getValue().isEmpty()) {
             ClipApplication.showNotification("Please fill all the fields");
             return;
         }
 
-        if ( passwordProtected.getValue() && passwordField.getValue().isEmpty() ){
+        if (passwordProtected.getValue() && passwordField.getValue().isEmpty()) {
             ClipApplication.showNotification("Please fill all the fields");
             return;
-        }
-        else{
+
+        } else {
             clip.setClipPassword(passwordField.getValue());
             clip.setClipUpdatedAt(new Timestamp(System.currentTimeMillis()));
             clip.setClipPrivate(clipPrivate.getValue());
 
-            // TODO: create edit password for enablind editing clip by user if not logged in
-
-
-            if ( userSessionToken != null ){
-            
-                // TODO: get user session token and update user data 
-            
+            if (!userSessionToken.equals("")) {
+                // TODO: got user session token and update user data
+            } else {
+                clip.setClipEditorPassword();
             }
 
-            if ( isNewClip ){
+            if (isNewClip) {
                 int ans = databaseClip.createClip(clip);
-                if ( ans == 1 ){
+                if (ans == 1) {
                     ClipApplication.showNotification("Clip created successfully");
-                }
-                else{
+                    PublishSummaryWindow publishSummaryWindow = new PublishSummaryWindow(clip);
+
+                    main_layout.add(publishSummaryWindow.main_dialog);
+                    publishSummaryWindow.main_dialog.open();
+
+                    main_dialog.close();
+                    clipEditor.clear();
+                } else {
                     ClipApplication.showNotification("Failed to create clip");
                 }
-            }
-            else{
-                databaseClip.updateClip(clip);
+            } else {
+                int ans = databaseClip.updateClip(clip);
+                if (ans == 1) {
+                    ClipApplication.showNotification("Clip updated successfully");
+                    main_dialog.close();
+                    clipEditor.clear();
+                } else {
+                    ClipApplication.showNotification("Failed to update clip");
+                }
             }
         }
     }
 }
-

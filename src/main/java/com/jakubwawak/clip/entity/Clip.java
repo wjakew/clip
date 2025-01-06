@@ -8,6 +8,7 @@ package com.jakubwawak.clip.entity;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.security.SecureRandom;
 
 import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.database.DatabaseClip;
@@ -32,28 +33,32 @@ public class Clip {
     private int clipWordCount;
     private int clipReactionsCount;
 
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private static final SecureRandom RANDOM = new SecureRandom();
+
     /**
      * Constructor for the Clip class
-     * @param id - the id of the clip
-     * @param userId - the id of the user
-     * @param clipUrl - the url of the clip
-     * @param clipTitle - the title of the clip
-     * @param clipRaw - the raw content of the clip
-     * @param clipExtension - the extension of the clip
-     * @param clipCreatedAt - the creation date of the clip
-     * @param clipUpdatedAt - the last update date of the clip
-     * @param clipPrivate - whether the clip is private
-     * @param clipDeleted - whether the clip is deleted
-     * @param clipPassword - the password of the clip
-     * @param clipPasswordSalt - the salt of the password of the clip
+     * 
+     * @param id                 - the id of the clip
+     * @param userId             - the id of the user
+     * @param clipUrl            - the url of the clip
+     * @param clipTitle          - the title of the clip
+     * @param clipRaw            - the raw content of the clip
+     * @param clipExtension      - the extension of the clip
+     * @param clipCreatedAt      - the creation date of the clip
+     * @param clipUpdatedAt      - the last update date of the clip
+     * @param clipPrivate        - whether the clip is private
+     * @param clipDeleted        - whether the clip is deleted
+     * @param clipPassword       - the password of the clip
+     * @param clipPasswordSalt   - the salt of the password of the clip
      * @param clipEditorPassword - the password of the editor of the clip
-     * @param clipWordCount - the word count of the clip
+     * @param clipWordCount      - the word count of the clip
      * @param clipReactionsCount - the reactions count of the clip
      */
     public Clip(int id, int userId, String clipUrl, String clipTitle, String clipRaw, String clipExtension,
-                Timestamp clipCreatedAt, Timestamp clipUpdatedAt, boolean clipPrivate, boolean clipDeleted,
-                String clipPassword, String clipPasswordSalt, String clipEditorPassword,
-                int clipWordCount, int clipReactionsCount) {
+            Timestamp clipCreatedAt, Timestamp clipUpdatedAt, boolean clipPrivate, boolean clipDeleted,
+            String clipPassword, String clipPasswordSalt, String clipEditorPassword,
+            int clipWordCount, int clipReactionsCount) {
         this.id = id;
         this.userId = userId;
         this.clipUrl = clipUrl;
@@ -73,10 +78,11 @@ public class Clip {
 
     /**
      * Constructor for the Clip class
+     * 
      * @param resultSet - the result set of the clip
      */
-    public Clip(ResultSet resultSet){
-        try{
+    public Clip(ResultSet resultSet) {
+        try {
             this.id = resultSet.getInt("id");
             this.userId = resultSet.getInt("user_id");
             this.clipUrl = resultSet.getString("clip_url");
@@ -92,8 +98,7 @@ public class Clip {
             this.clipEditorPassword = resultSet.getString("clip_editor_password");
             this.clipWordCount = resultSet.getInt("clip_word_count");
             this.clipReactionsCount = resultSet.getInt("clip_reactions_count");
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             ClipApplication.database.log("Error creating clip from result set (" + e.toString() + ")", "DB-CLIP");
         }
     }
@@ -101,7 +106,7 @@ public class Clip {
     /**
      * Constructor for the Clip class
      */
-    public Clip(){
+    public Clip() {
         DatabaseClip databaseClip = new DatabaseClip();
         this.id = 0;
         this.userId = 0;
@@ -118,6 +123,21 @@ public class Clip {
         this.clipEditorPassword = "";
         this.clipWordCount = 0;
         this.clipReactionsCount = 0;
+    }
+
+    /**
+     * Generates a random string of the specified length.
+     * 
+     * @param length the length of the random string
+     * @return a random string
+     */
+    private String generateRandomString(int length) {
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int index = RANDOM.nextInt(CHARACTERS.length());
+            sb.append(CHARACTERS.charAt(index));
+        }
+        return sb.toString();
     }
 
     // Getters and Setters
@@ -221,8 +241,8 @@ public class Clip {
         return clipEditorPassword;
     }
 
-    public void setClipEditorPassword(String clipEditorPassword) {
-        this.clipEditorPassword = clipEditorPassword;
+    public void setClipEditorPassword() {
+        this.clipEditorPassword = generateRandomString(10);
     }
 
     public int getClipWordCount() {

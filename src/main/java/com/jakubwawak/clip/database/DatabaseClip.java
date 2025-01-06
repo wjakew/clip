@@ -22,12 +22,13 @@ public class DatabaseClip {
     /**
      * Constructor for the DatabaseClip class
      */
-    public DatabaseClip(){
+    public DatabaseClip() {
         this.database = ClipApplication.database;
     }
 
     /**
      * Function for calculating the clip url
+     * 
      * @return the clip url
      */
     public String calculateClipUrl() {
@@ -40,6 +41,7 @@ public class DatabaseClip {
 
     /**
      * Function for generating a random string
+     * 
      * @param length - the length of the string
      * @return the random string
      */
@@ -55,6 +57,7 @@ public class DatabaseClip {
 
     /**
      * Function for checking if the clip url exists
+     * 
      * @param clipUrl - the url of the clip
      * @return true if the clip url exists, false otherwise
      */
@@ -74,10 +77,11 @@ public class DatabaseClip {
 
     /**
      * Function for creating a clip
+     * 
      * @param clip - the clip to create
      * @return 1 if the clip was created successfully, 0 if it failed
      */
-    public int createClip(Clip clip){
+    public int createClip(Clip clip) {
         String sql = "INSERT INTO clip (clip_url, clip_title, clip_raw, clip_extension, clip_created_at, clip_updated_at, clip_private, clip_deleted, clip_password, clip_password_salt, clip_editor_password, clip_word_count, clip_reactions_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = database.getConnection().prepareStatement(sql)) {
             pstmt.setString(1, clip.getClipUrl());
@@ -94,20 +98,21 @@ public class DatabaseClip {
             pstmt.setInt(12, clip.getClipWordCount());
             pstmt.setInt(13, clip.getClipReactionsCount());
             pstmt.execute();
-            database.log("Clip created (" + clip.getClipUrl() + ")", "DB-CLIP");
+            database.log("Clip created (" + clip.getClipUrl() + ") for user " + clip.getUserId(), "DB-CLIP");
             return 1;
         } catch (SQLException e) {
-            database.log("Failed to create clip (" + clip.getClipUrl() + ")", "DB-CLIP");
+            database.log("Failed to create clip (" + clip.getClipUrl() + ") - " + e.getMessage(), "DB-CLIP");
             return 0;
         }
     }
 
     /**
      * Function for updating a clip
+     * 
      * @param clip - the clip to update
      * @return 1 if the clip was updated successfully, 0 if it failed
      */
-    public int updateClip(Clip clip){
+    public int updateClip(Clip clip) {
         String sql = "UPDATE clip SET clip_title = ?, clip_raw = ?, clip_extension = ?, clip_updated_at = ?, clip_private = ?, clip_deleted = ?, clip_password = ?, clip_password_salt = ?, clip_editor_password = ?, clip_word_count = ?, clip_reactions_count = ? WHERE clip_url = ?";
         try (PreparedStatement pstmt = database.getConnection().prepareStatement(sql)) {
             pstmt.setString(1, clip.getClipTitle());

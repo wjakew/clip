@@ -1,7 +1,11 @@
+@font-face {
+    font-family: 'standard';
+    src: url('assets/fonts/LibreBaskerville-Regular.ttf');
+}
 :root {
     --primary-color: #000000; /* Replace with your desired primary color */
     --secondary-color: #ffffff; /* Replace with your desired secondary color */
-    --font-family: 'Monospace'; /* Replace with your desired font */
+    --font-family: 'standard', monospace; /* Set to the created font-face */
 }
 vaadin-icon{
     color: var(--secondary-color);
@@ -26,9 +30,11 @@ H1{
     margin: 0;
     padding: 0;
     color: var(--secondary-color);
+    font-family: var(--font-family);
 }
 H4{
     font-size: 20px;
+    font-family: var(--font-family);
     font-weight: 900;
     margin: 0;
     padding: 0;
@@ -40,6 +46,7 @@ H6{
     margin: 0;
     padding: 0;
     color: var(--secondary-color);
+    font-family: var(--font-family);
 }
 .notification::part(overlay){
     background-color: var(--primary-color);

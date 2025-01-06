@@ -47,24 +47,23 @@ public class ClipEditor extends VerticalLayout {
 
     private MarkdownEditor markdownEditor;
 
+    private H6 wordCount, createdAs;
 
-    private H6 wordCount,createdAs;
     /**
      * Constructor for the ClipEditor class
      */
-    public ClipEditor(Clip clip, String userSessionToken,boolean proMode){
+    public ClipEditor(Clip clip, String userSessionToken, boolean proMode) {
         this.clip = clip;
         this.userSessionToken = userSessionToken;
         this.proMode = proMode;
-        if ( clip == null ){
+        if (clip == null) {
             this.clip = new Clip();
             this.newClip = true;
-        }
-        else{
+        } else {
             this.newClip = false;
         }
 
-        if ( userSessionToken == null ){
+        if (userSessionToken == null) {
             this.userSessionToken = "";
         }
 
@@ -72,15 +71,15 @@ public class ClipEditor extends VerticalLayout {
         this.setSizeFull();
         this.setAlignItems(Alignment.CENTER);
         this.setJustifyContentMode(JustifyContentMode.CENTER);
-    
+
         prepareComponents();
-        prepareLayout();    
+        prepareLayout();
     }
 
     /**
      * Function for preparing the components
      */
-    private void prepareComponents(){
+    private void prepareComponents() {
         this.cliptTitle = new TextField("");
         this.cliptTitle.setPlaceholder("Title");
         this.cliptTitle.setPrefixComponent(VaadinIcon.FLAG.create());
@@ -93,27 +92,27 @@ public class ClipEditor extends VerticalLayout {
         menuBar.addClassName("menubar");
 
         MenuItem settings = menuBar.addItem("Settings");
-        
+
         SubMenu settingsSubMenu = settings.getSubMenu();
         settingsSubMenu.addItem("Show Statistics");
 
-        publishButton = new Button("Publish",VaadinIcon.UPLOAD.create(),this::saveOrUpdateClip);
+        publishButton = new Button("Publish", VaadinIcon.UPLOAD.create(), this::saveOrUpdateClip);
         publishButton.addClassName("landing-page-button-small");
 
-        if ( !newClip ){
+        if (!newClip) {
             publishButton.setText("Update");
         }
 
-        wordCount = new H6("words: "+clip.getClipWordCount());
-        if ( clip.getUserId() == 0 ){
+        wordCount = new H6("words: " + clip.getClipWordCount());
+        if (clip.getUserId() == 0) {
             createdAs = new H6("created as: guest");
-        }else{
-            createdAs = new H6("created as: "+clip.getUserId());
+        } else {
+            createdAs = new H6("created as: " + clip.getUserId());
         }
 
         clipType = new ComboBox<String>();
         clipType.addClassName("clip-editor-clip-type");
-        clipType.setItems("text","code");
+        clipType.setItems("text", "code");
         clipType.setLabel("");
         clipType.setPlaceholder("type");
         clipType.setValue(clip.getClipExtension());
@@ -124,15 +123,15 @@ public class ClipEditor extends VerticalLayout {
         this.markdownEditor.setPlaceholder("clip content...");
         this.markdownEditor.setDataColorMode(DataColorMode.DARK);
 
-        this.markdownEditor.addContentChangeListener(e->{
+        this.markdownEditor.addContentChangeListener(e -> {
             String contentRaw = this.markdownEditor.getContent();
             int wordCountValue = contentRaw.split("\\s+").length;
             wordCount.setText("words: " + wordCountValue);
         });
 
-        if( proMode ){
+        if (proMode) {
             this.markdownEditor.setMaxLength(1000);
-        }else{
+        } else {
             this.markdownEditor.setMaxLength(1000000);
         }
 
@@ -141,7 +140,7 @@ public class ClipEditor extends VerticalLayout {
     /**
      * Function for preparing the upper bar
      */
-    private HorizontalLayout prepareUpperBar(){
+    private HorizontalLayout prepareUpperBar() {
         HorizontalLayout upperBar = new HorizontalLayout();
         upperBar.setWidthFull();
         upperBar.setJustifyContentMode(JustifyContentMode.CENTER);
@@ -158,7 +157,7 @@ public class ClipEditor extends VerticalLayout {
         center_layout.setSizeFull();
         center_layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         center_layout.setAlignItems(FlexComponent.Alignment.CENTER);
-    
+
         FlexLayout right_layout = new FlexLayout();
         right_layout.setSizeFull();
         right_layout.setJustifyContentMode(JustifyContentMode.END);
@@ -166,7 +165,7 @@ public class ClipEditor extends VerticalLayout {
         right_layout.setWidth("80%");
 
         left_layout.add(cliptTitle);
-        right_layout.add(menuBar,publishButton);
+        right_layout.add(menuBar, publishButton);
 
         upperBar.add(left_layout, center_layout, right_layout);
 
@@ -176,7 +175,7 @@ public class ClipEditor extends VerticalLayout {
     /**
      * Function for preparing the lower bar
      */
-    private HorizontalLayout prepareLowerBar(){
+    private HorizontalLayout prepareLowerBar() {
         HorizontalLayout lowerBar = new HorizontalLayout();
         lowerBar.setWidthFull();
         lowerBar.setJustifyContentMode(JustifyContentMode.CENTER);
@@ -193,14 +192,14 @@ public class ClipEditor extends VerticalLayout {
         center_layout.setSizeFull();
         center_layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         center_layout.setAlignItems(FlexComponent.Alignment.CENTER);
-    
+
         FlexLayout right_layout = new FlexLayout();
         right_layout.setSizeFull();
         right_layout.setJustifyContentMode(JustifyContentMode.END);
         right_layout.setAlignItems(FlexComponent.Alignment.CENTER);
         right_layout.setWidth("80%");
 
-        left_layout.add(clipType,createdAs);
+        left_layout.add(clipType, createdAs);
         right_layout.add(wordCount);
         lowerBar.add(left_layout, center_layout, right_layout);
 
@@ -210,8 +209,8 @@ public class ClipEditor extends VerticalLayout {
     /**
      * Function for saving or updating the clip
      */
-    private void saveOrUpdateClip(ClickEvent<Button> event){
-        if( cliptTitle.getValue().isEmpty() && markdownEditor.getContent().isEmpty() && clipType.getValue().isEmpty() ){
+    private void saveOrUpdateClip(ClickEvent<Button> event) {
+        if (cliptTitle.getValue().isEmpty() && markdownEditor.getContent().isEmpty() && clipType.getValue().isEmpty()) {
             ClipApplication.showNotification("Please fill all the fields");
             return;
         }
@@ -219,12 +218,14 @@ public class ClipEditor extends VerticalLayout {
         clip.setClipTitle(cliptTitle.getValue());
         clip.setClipRaw(markdownEditor.getContent());
         clip.setClipExtension(clipType.getValue());
-        if ( newClip ){
+        clip.setClipWordCount(clip.getClipRaw().split("\\s+").length);
+
+        if (newClip) {
             clip.setClipCreatedAt(new Timestamp(System.currentTimeMillis()));
         }
         clip.setClipUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
-        PublishWindow publishWindow = new PublishWindow(clip, userSessionToken, proMode, newClip);
+        PublishWindow publishWindow = new PublishWindow(clip, userSessionToken, proMode, newClip, this);
         add(publishWindow.main_dialog);
         publishWindow.main_dialog.open();
     }
@@ -232,7 +233,18 @@ public class ClipEditor extends VerticalLayout {
     /**
      * Function for preparing the layout
      */
-    private void prepareLayout(){
-        this.add(prepareUpperBar(),markdownEditor,prepareLowerBar());
+    private void prepareLayout() {
+        this.add(prepareUpperBar(), markdownEditor, prepareLowerBar());
+    }
+
+    /**
+     * Function for clearing the clip editor
+     */
+    public void clear() {
+        this.markdownEditor.setContent("");
+        this.cliptTitle.setValue("");
+        this.clipType.setValue("");
+        this.clip = new Clip();
+        this.newClip = true;
     }
 }

@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS user_notifications
 CREATE TABLE IF NOT EXISTS clip
 (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
+    user_id INT,
     
     clip_url VARCHAR(255) NOT NULL,
     clip_title VARCHAR(255) NOT NULL,
