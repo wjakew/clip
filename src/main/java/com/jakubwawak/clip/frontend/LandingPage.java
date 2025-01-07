@@ -25,8 +25,8 @@ import com.vaadin.flow.router.RouteAlias;
  */
 @Route(value = "/welcome")
 @RouteAlias(value = "/")
-@PageTitle("Welcome to Clip")
-public class LandingPage extends VerticalLayout{
+@PageTitle("clip that words")
+public class LandingPage extends VerticalLayout {
 
     Button loginButton;
     Button createClipButton;
@@ -37,7 +37,7 @@ public class LandingPage extends VerticalLayout{
     /**
      * Constructor for the Landing Page
      */
-    public LandingPage(){
+    public LandingPage() {
         addClassName("landing-page");
 
         createButtons();
@@ -50,7 +50,6 @@ public class LandingPage extends VerticalLayout{
 
         landing_page_content.add(new HorizontalLayout(createClipButton));
 
-
         add(headerLandingBar);
         add(landing_page_content);
         setSizeFull();
@@ -61,19 +60,19 @@ public class LandingPage extends VerticalLayout{
     /**
      * Creates the buttons for the landing page
      */
-    void createButtons(){
-        loginButton = new Button("login",VaadinIcon.USER.create());
-        loginButton.addClassName("landing-page-button-small");    
-        createClipButton = new Button("create clip",VaadinIcon.PLUS.create(),this::createClipAction);
+    void createButtons() {
+        loginButton = new Button("login", VaadinIcon.USER.create());
+        loginButton.addClassName("landing-page-button-small");
+        createClipButton = new Button("create clip", VaadinIcon.PLUS.create(), this::createClipAction);
         createClipButton.addClassName("landing-page-button-big");
-        goToClipLibrary = new Button("library",VaadinIcon.BOOK.create());
+        goToClipLibrary = new Button("library", VaadinIcon.BOOK.create());
         goToClipLibrary.addClassName("landing-page-button-small-transparent");
     }
 
     /**
      * Creates the header bar for the landing page
      */
-    void createHeaderBar(){
+    void createHeaderBar() {
         headerLandingBar = new HorizontalLayout();
 
         FlexLayout left_layout = new FlexLayout();
@@ -90,19 +89,18 @@ public class LandingPage extends VerticalLayout{
         center_layout.setAlignItems(FlexComponent.Alignment.CENTER);
         center_layout.add(new H6("clip."));
 
-    
         FlexLayout right_layout = new FlexLayout();
         right_layout.setSizeFull();
         right_layout.setJustifyContentMode(JustifyContentMode.END);
         right_layout.setAlignItems(FlexComponent.Alignment.CENTER);
         right_layout.setWidth("80%");
-        
+
         // Apply the spacing class to the buttons
         goToClipLibrary.addClassName("spacing");
         loginButton.addClassName("spacing");
 
         right_layout.add(goToClipLibrary, loginButton);
-        
+
         headerLandingBar.add(left_layout, center_layout, right_layout);
 
         headerLandingBar.setWidthFull();
@@ -112,13 +110,13 @@ public class LandingPage extends VerticalLayout{
     /**
      * Action for creating a clip
      */
-    private void createClipAction(ClickEvent<Button> event){
+    private void createClipAction(ClickEvent<Button> event) {
         removeAll();
-        
+
         add(headerLandingBar);
 
-        ClipEditor clipEditor = new ClipEditor(null, null,false);
-        
+        ClipEditor clipEditor = new ClipEditor(null, null, false);
+
         add(clipEditor);
     }
 }

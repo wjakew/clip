@@ -8,6 +8,7 @@ package com.jakubwawak.clip.database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.entity.Clip;
@@ -134,6 +135,25 @@ public class DatabaseClip {
             database.log("Failed to update clip (" + clip.getClipUrl() + ") - " + e.getMessage(), "DB-CLIP");
             return 0;
         }
+    }
+
+    /**
+     * Function for getting the library clips
+     * 
+     * @return the library clips
+     */
+    public ArrayList<Clip> getLibraryClips() {
+        ArrayList<Clip> data = new ArrayList<>();
+        String sql = "SELECT * FROM clip WHERE clip_private = 0 AND clip_deleted = 0";
+        try (PreparedStatement pstmt = database.getConnection().prepareStatement(sql)) {
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
+                data.add(new Clip(resultSet));
+            }
+        } catch (SQLException e) {
+            database.log("Failed to get library clips (" + e.getMessage() + ")", "DB-CLIP");
+        }
+        return data;
     }
 
     /**

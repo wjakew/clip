@@ -92,7 +92,7 @@ H6{
     --vaadin-button-border-radius: 0px;
 }
 .landing-page {
-    background: radial-gradient(circle, black, darkblue, pink);
+    background: linear-gradient(135deg, black, darkblue, pink);
     background-size: 300% 300%;
     animation: gradient-spin 5s ease infinite alternate;
     color: var(--secondary-color);
@@ -148,5 +148,9 @@ H6{
     font-family: var(--font-family);
 }
 .clip-viewer{
+    border: 1px solid var(--secondary-color);
+}
+/* library page components */
+.clip-card{
     border: 1px solid var(--secondary-color);
 }
