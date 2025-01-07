@@ -157,6 +157,43 @@ public class DatabaseClip {
     }
 
     /**
+     * Function for getting a selected amount of clips
+     * 
+     * @param start - the start of the range
+     * @param end   - the end of the range
+     * @return the selected amount of clips
+     */
+    public ArrayList<Clip> getSelectedAmountOfClips(int start, int end) {
+        ArrayList<Clip> data = new ArrayList<>();
+        String sql = "SELECT * FROM clip WHERE clip_private = 0 AND clip_deleted = 0 LIMIT " + start + ", " + end;
+        try (PreparedStatement pstmt = database.getConnection().prepareStatement(sql)) {
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
+                data.add(new Clip(resultSet));
+            }
+        } catch (SQLException e) {
+            database.log("Failed to get selected amount of clips (" + e.getMessage() + ")", "DB-CLIP");
+        }
+        return data;
+    }
+
+    /**
+     * Function for getting the amount of clips
+     * 
+     * @return the amount of clips
+     */
+    public int getClipAmount() {
+        String sql = "SELECT COUNT(*) FROM clip";
+        try (PreparedStatement pstmt = database.getConnection().prepareStatement(sql)) {
+            ResultSet resultSet = pstmt.executeQuery();
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            database.log("Failed to get clip amount (" + e.getMessage() + ")", "DB-CLIP");
+        }
+        return 0;
+    }
+
+    /**
      * Function for getting a clip by its url
      * 
      * @param clipUrl - the url of the clip
