@@ -86,6 +86,7 @@ public class ClipEditor extends VerticalLayout {
         this.cliptTitle.setWidthFull();
         cliptTitle.setValue(clip.getClipTitle());
         cliptTitle.addClassName("clip-editor-title");
+        cliptTitle.setMaxLength(300);
 
         menuBar = new MenuBar();
         menuBar.addThemeVariants(MenuBarVariant.LUMO_DROPDOWN_INDICATORS);
