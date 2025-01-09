@@ -6,7 +6,7 @@
 package com.jakubwawak.clip.frontend.windows;
 
 import com.jakubwawak.clip.entity.Clip;
-import com.jakubwawak.clip.frontend.ViewerPage;
+import com.jakubwawak.clip.frontend.PublicViewerPage;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -61,7 +61,7 @@ public class PublishSummaryWindow {
         goToViewerButton.addClassName("landing-page-button-small");
 
         goToViewerButton.addClickListener(e -> {
-            UI.getCurrent().navigate(ViewerPage.class, clip.getClipUrl());
+            UI.getCurrent().navigate(PublicViewerPage.class, clip.getClipUrl());
         });
 
         closeButton = new Button("Close");

@@ -7,8 +7,9 @@ package com.jakubwawak.clip.frontend;
 
 import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.frontend.components.ClipEditor;
+import com.jakubwawak.clip.frontend.components.LibraryComponent;
+import com.jakubwawak.clip.frontend.windows.EditorWindow;
 import com.vaadin.flow.component.ClickEvent;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H6;
@@ -19,26 +20,24 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
 
 /**
  * Landing Page for the application
  */
-@Route(value = "/welcome")
-@RouteAlias(value = "/")
-@PageTitle("clip that words")
-public class LandingPage extends VerticalLayout {
+@Route(value = "/library")
+@PageTitle("clip library")
+public class PublicLibraryPage extends VerticalLayout {
 
-    Button loginButton;
     Button createClipButton;
-    Button goToClipLibrary;
 
     HorizontalLayout headerLandingBar;
+
+    LibraryComponent libraryComponent;
 
     /**
      * Constructor for the Landing Page
      */
-    public LandingPage() {
+    public PublicLibraryPage() {
         addClassName("landing-page");
 
         createButtons();
@@ -49,7 +48,9 @@ public class LandingPage extends VerticalLayout {
         landing_page_content.setAlignItems(Alignment.CENTER);
         landing_page_content.setJustifyContentMode(JustifyContentMode.CENTER);
 
-        landing_page_content.add(new HorizontalLayout(createClipButton));
+        libraryComponent = new LibraryComponent();
+
+        landing_page_content.add(libraryComponent);
 
         add(headerLandingBar);
         add(landing_page_content);
@@ -62,15 +63,8 @@ public class LandingPage extends VerticalLayout {
      * Creates the buttons for the landing page
      */
     void createButtons() {
-        loginButton = new Button("login", VaadinIcon.USER.create());
-        loginButton.addClassName("landing-page-button-small");
         createClipButton = new Button("create clip", VaadinIcon.PLUS.create(), this::createClipAction);
-        createClipButton.addClassName("landing-page-button-big");
-        goToClipLibrary = new Button("library", VaadinIcon.BOOK.create());
-        goToClipLibrary.addClassName("landing-page-button-small-transparent");
-        goToClipLibrary.addClickListener(event -> {
-            UI.getCurrent().navigate(PublicLibraryPage.class);
-        });
+        createClipButton.addClassName("landing-page-button-small");
     }
 
     /**
@@ -99,11 +93,7 @@ public class LandingPage extends VerticalLayout {
         right_layout.setAlignItems(FlexComponent.Alignment.CENTER);
         right_layout.setWidth("80%");
 
-        // Apply the spacing class to the buttons
-        goToClipLibrary.addClassName("spacing");
-        loginButton.addClassName("spacing");
-
-        right_layout.add(goToClipLibrary, loginButton);
+        right_layout.add(createClipButton);
 
         headerLandingBar.add(left_layout, center_layout, right_layout);
 
@@ -115,12 +105,8 @@ public class LandingPage extends VerticalLayout {
      * Action for creating a clip
      */
     private void createClipAction(ClickEvent<Button> event) {
-        removeAll();
-
-        add(headerLandingBar);
-
-        ClipEditor clipEditor = new ClipEditor(null, null, false);
-
-        add(clipEditor);
+        EditorWindow editorWindow = new EditorWindow(null,null,false);
+        add(editorWindow.main_dialog);
+        editorWindow.main_dialog.open();
     }
 }

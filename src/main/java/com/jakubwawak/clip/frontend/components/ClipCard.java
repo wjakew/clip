@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.entity.Clip;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.icon.Icon;

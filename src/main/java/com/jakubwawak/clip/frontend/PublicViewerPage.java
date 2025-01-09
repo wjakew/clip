@@ -32,7 +32,7 @@ import com.vaadin.flow.router.RouteAlias;
  */
 @Route(value = "/viewer")
 @PageTitle("clip viewer")
-public class ViewerPage extends VerticalLayout implements HasUrlParameter<String> {
+public class PublicViewerPage extends VerticalLayout implements HasUrlParameter<String> {
 
     HorizontalLayout headerLandingBar;
 
@@ -43,7 +43,7 @@ public class ViewerPage extends VerticalLayout implements HasUrlParameter<String
     /**
      * Constructor for the Landing Page
      */
-    public ViewerPage() {
+    public PublicViewerPage() {
         addClassName("viewer-page");
 
         createButtons();

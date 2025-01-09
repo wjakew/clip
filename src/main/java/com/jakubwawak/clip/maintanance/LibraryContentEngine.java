@@ -6,6 +6,7 @@
 package com.jakubwawak.clip.maintanance;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.jakubwawak.clip.database.DatabaseClip;
 import com.jakubwawak.clip.entity.Clip;
@@ -18,11 +19,13 @@ public class LibraryContentEngine {
 
     public ArrayList<Clip> content;
 
+    public ArrayList<Clip> currentPage;
+
     public ArrayList<ClipCard> clipCards;
 
     DatabaseClip databaseClip;
 
-    int endIndex;
+    static int endIndex = 50;
 
     static int pageSize = 30;
 
@@ -33,10 +36,9 @@ public class LibraryContentEngine {
 
         content = new ArrayList<>();
         clipCards = new ArrayList<>();
-
+        currentPage = new ArrayList<>();
         databaseClip = new DatabaseClip();
         endIndex = databaseClip.getClipAmount();
-        content = databaseClip.getSelectedAmountOfClips(0, endIndex);
     }
 
     /**
@@ -54,12 +56,27 @@ public class LibraryContentEngine {
      * @param page - the page to load
      */
     public void loadClipCards(int page) {
+        content = databaseClip.getSelectedAmountOfClips(page * pageSize, page * pageSize + pageSize);
+
+        if (content == null || content.isEmpty()) {
+            System.out.println("No clips available for the requested page.");
+            return;
+        }
+
         int startIndex = page * pageSize;
         int endIndex = startIndex + pageSize;
+        
         clipCards.clear();
+        currentPage.clear();
 
-        for (int i = startIndex; i < endIndex; i++) {
-            clipCards.add(new ClipCard(content.get(i)));
+        int i = startIndex;
+        for ( Clip clip : content ) {
+            clipCards.add(new ClipCard(clip));
+            currentPage.add(clip);
+            if ( i == endIndex ) {
+                break;
+            }
+            i++;
         }
     }
 
