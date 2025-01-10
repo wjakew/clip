@@ -8,9 +8,7 @@ package com.jakubwawak.clip.frontend;
 import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.database.DatabaseClip;
 import com.jakubwawak.clip.entity.Clip;
-import com.jakubwawak.clip.frontend.components.ClipEditor;
 import com.jakubwawak.clip.frontend.components.PublicClipViewer;
-import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H4;
@@ -25,7 +23,6 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
 
 /**
  * Landing Page for the application

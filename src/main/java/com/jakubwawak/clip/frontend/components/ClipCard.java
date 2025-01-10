@@ -9,9 +9,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.entity.Clip;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.icon.Icon;
@@ -19,7 +17,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-
+import com.jakubwawak.clip.frontend.windows.PublicViewerWindow;
 /**
  * ClipCard class for the Clip application
  */
@@ -53,7 +51,7 @@ public class ClipCard extends VerticalLayout {
      */
     void prepareClipCard() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedTimestamp = LocalDateTime.ofEpochSecond(clip.getClipCreatedAt().getTime(), 0, ZoneOffset.UTC)
+        String formattedTimestamp = LocalDateTime.ofEpochSecond(clip.getClipCreatedAt().getTime() / 1000, 0, ZoneOffset.UTC)
                 .format(formatter);
 
         this.timestamp = new H6(formattedTimestamp);
@@ -126,6 +124,13 @@ public class ClipCard extends VerticalLayout {
         this.add(upperLayout);
         this.add(layout);
         this.add(bottomLayout);
+
+
+        addClickListener(event -> {
+            PublicViewerWindow publicViewerWindow = new PublicViewerWindow(clip);
+            add(publicViewerWindow.main_dialog);
+            publicViewerWindow.main_dialog.open();
+        });
     }
 
 }
