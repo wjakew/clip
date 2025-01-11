@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
+import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.entity.Clip;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H6;
@@ -17,6 +18,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.jakubwawak.clip.frontend.windows.ClipPasswordWindow;
 import com.jakubwawak.clip.frontend.windows.PublicViewerWindow;
 /**
  * ClipCard class for the Clip application
@@ -127,9 +129,15 @@ public class ClipCard extends VerticalLayout {
 
 
         addClickListener(event -> {
-            PublicViewerWindow publicViewerWindow = new PublicViewerWindow(clip);
-            add(publicViewerWindow.main_dialog);
-            publicViewerWindow.main_dialog.open();
+            if ( clip.getClipPassword().equals("")) {
+                PublicViewerWindow publicViewerWindow = new PublicViewerWindow(clip);
+                add(publicViewerWindow.main_dialog);
+                publicViewerWindow.main_dialog.open();
+            } else {
+                ClipPasswordWindow clipPasswordWindow = new ClipPasswordWindow(clip);
+                add(clipPasswordWindow.main_dialog);
+                clipPasswordWindow.main_dialog.open();
+            }
         });
     }
 

@@ -20,7 +20,7 @@ import com.vaadin.flow.component.textfield.PasswordField;
 /**
  * Window for logging user to the app
  */
-public class EditorPasswordWindow {
+public class ClipPasswordWindow {
 
     // variables for setting x and y of window
     public String width = "45%";
@@ -40,7 +40,7 @@ public class EditorPasswordWindow {
     /**
      * Constructor
      */
-    public EditorPasswordWindow(Clip clip) {
+    public ClipPasswordWindow(Clip clip) {
         this.clip = clip;
         main_dialog = new Dialog();
         main_dialog.addClassName("dialog");
@@ -69,7 +69,7 @@ public class EditorPasswordWindow {
     void prepare_dialog() {
         prepare_components();
         // set layout
-        main_dialog.add(new HorizontalLayout(VaadinIcon.LOCK.create(), new H4("Editor Locked")));
+        main_dialog.add(new HorizontalLayout(VaadinIcon.LOCK.create(), new H4("Clip Locked")));
         main_layout.add(passwordField);
         main_layout.add(submitButton);
 
@@ -90,11 +90,12 @@ public class EditorPasswordWindow {
      * Function for submitting the password
      */
     private void submitPassword(ClickEvent<Button> event) {
-        if (passwordField.getValue().equals(clip.getClipEditorPassword())) {
+        if (passwordField.getValue().equals(clip.getClipPassword())) {
             main_dialog.close();
             // open editor window
-            EditorWindow editorWindow = new EditorWindow(clip, "", false);
-            editorWindow.main_dialog.open();
+            PublicViewerWindow publicViewerWindow = new PublicViewerWindow(clip);
+            main_layout.add(publicViewerWindow.main_dialog);
+            publicViewerWindow.main_dialog.open();
 
         } else {
             ClipApplication.showNotification("Wrong password!");

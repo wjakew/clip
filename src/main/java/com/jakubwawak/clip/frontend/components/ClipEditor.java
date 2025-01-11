@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import com.flowingcode.vaadin.addons.markdown.BaseMarkdownComponent.DataColorMode;
 import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.entity.Clip;
+import com.jakubwawak.clip.frontend.windows.ClipStatisticsWindow;
 import com.jakubwawak.clip.frontend.windows.PublishWindow;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
@@ -95,7 +96,19 @@ public class ClipEditor extends VerticalLayout {
         MenuItem settings = menuBar.addItem("Settings");
 
         SubMenu settingsSubMenu = settings.getSubMenu();
-        settingsSubMenu.addItem("Show Statistics");
+        settingsSubMenu.addItem("Show Statistics", e -> {
+            ClipStatisticsWindow clipStatisticsWindow = new ClipStatisticsWindow(clip);
+            clipStatisticsWindow.main_dialog.open();
+        });
+
+        settingsSubMenu.addItem("Clear Clip", e -> {
+            cliptTitle.setValue("");
+            markdownEditor.setContent("");
+            clipType.setValue("");
+            clip = new Clip();
+            newClip = true;
+            ClipApplication.showNotification("Clip cleared");
+        });
 
         publishButton = new Button("Publish", VaadinIcon.UPLOAD.create(), this::saveOrUpdateClip);
         publishButton.addClassName("landing-page-button-small");
