@@ -29,6 +29,7 @@ import com.vaadin.flow.router.Route;
 public class PublicLibraryPage extends VerticalLayout {
 
     Button createClipButton;
+    Button goBackButton;
 
     HorizontalLayout headerLandingBar;
 
@@ -65,6 +66,8 @@ public class PublicLibraryPage extends VerticalLayout {
     void createButtons() {
         createClipButton = new Button("create clip", VaadinIcon.PLUS.create(), this::createClipAction);
         createClipButton.addClassName("landing-page-button-small");
+        goBackButton = new Button("go back", VaadinIcon.ARROW_LEFT.create(), this::goBackAction);
+        goBackButton.addClassName("landing-page-button-small");
     }
 
     /**
@@ -85,7 +88,7 @@ public class PublicLibraryPage extends VerticalLayout {
         center_layout.setSizeFull();
         center_layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         center_layout.setAlignItems(FlexComponent.Alignment.CENTER);
-        center_layout.add(new H6("clip."));
+        center_layout.add(new H6("clip library"));
 
         FlexLayout right_layout = new FlexLayout();
         right_layout.setSizeFull();
@@ -93,7 +96,7 @@ public class PublicLibraryPage extends VerticalLayout {
         right_layout.setAlignItems(FlexComponent.Alignment.CENTER);
         right_layout.setWidth("80%");
 
-        right_layout.add(createClipButton);
+        right_layout.add(goBackButton,createClipButton);
 
         headerLandingBar.add(left_layout, center_layout, right_layout);
 
@@ -108,5 +111,9 @@ public class PublicLibraryPage extends VerticalLayout {
         EditorWindow editorWindow = new EditorWindow(null,null,false);
         add(editorWindow.main_dialog);
         editorWindow.main_dialog.open();
+    }
+
+    private void goBackAction(ClickEvent<Button> event) {
+        getUI().get().navigate(LandingPage.class);
     }
 }

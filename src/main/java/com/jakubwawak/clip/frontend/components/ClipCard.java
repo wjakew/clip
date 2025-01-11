@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.entity.Clip;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -62,9 +62,9 @@ public class ClipCard extends VerticalLayout {
         this.title = new H4(clip.getClipTitle());
 
         if (!clip.getClipPassword().equals("")) {
-            this.icon = new Icon("fas", "lock");
+            this.icon = VaadinIcon.LOCK.create();
         } else {
-            this.icon = new Icon("fas", "unlock");
+            this.icon = VaadinIcon.OPEN_BOOK.create();
         }
         if (clip.getUserId() == 0) {
             this.owner = new H6("guest");
