@@ -5,10 +5,13 @@
  */
 package com.jakubwawak.clip.frontend.windows;
 
+import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.entity.Clip;
 import com.jakubwawak.clip.frontend.PublicViewerPage;
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H6;
@@ -19,6 +22,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 /**
  * Window for logging user to the app
  */
+@JsModule("./recipe/copytoclipboard.js")
 public class PublishSummaryWindow {
 
     // variables for setting x and y of window
@@ -56,7 +60,7 @@ public class PublishSummaryWindow {
         // set components
         copyLinkButton = new Button("Copy");
         copyLinkButton.addClassName("landing-page-button-small-transparent");
-
+        copyLinkButton.addClickListener(this::copybutton_action);
         goToViewerButton = new Button("Viewer");
         goToViewerButton.addClassName("landing-page-button-small");
 
@@ -103,5 +107,14 @@ public class PublishSummaryWindow {
         main_dialog.add(main_layout);
         main_dialog.setWidth(width);
         main_dialog.setHeight(height);
+    }
+
+    /**
+     * Function for copying to clipboard
+     */
+    private void copybutton_action(ClickEvent<Button> e){
+        UI.getCurrent().getPage().executeJs("window.copyToClipboard($0)",
+        "clip_url: "+clip.getClipUrl()+"\nclip_editpassword: "+clip.getClipEditorPassword());
+        ClipApplication.showNotification("Rezultat skopiowany do schowka!");
     }
 }
