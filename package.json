@@ -90,7 +90,7 @@
       "workbox-core": "7.3.0",
       "workbox-precaching": "7.3.0"
     },
-    "hash": "7f12b771efa3965013c6506af4d2ac3b715e5771999041a7d21282aa380abf8e"
+    "hash": "c3fd1457856be8d99507dfd35d9e017b5c6fe48eb8604d4dfb527be1087493aa"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -112,6 +112,7 @@
     "dompurify": "$dompurify",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "@vaadin/vaadin-lumo-styles": "$@vaadin/vaadin-lumo-styles",
-    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles"
+    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles",
+    "firebase-admin": "$firebase-admin"
   }
 }
