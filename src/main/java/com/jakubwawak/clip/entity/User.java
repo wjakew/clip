@@ -5,6 +5,8 @@
  */
 package com.jakubwawak.clip.entity;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -66,6 +68,26 @@ public class User {
         this.blog_url = blog_url;
         this.blog_name = blog_name;
         this.admin = admin;
+    }
+
+    /**
+     * Constructor for the User class
+     */
+    public User() {
+        this.id = 0;
+        this.username = "";
+        this.email = "";
+        this.account_photo_url = "";
+        this.background_color = "";
+        this.primary_color = "";
+        this.password = "";
+        this.password_salt = "";
+        this.created_at = null;
+        this.active = true;
+        this.last_login = null;
+        this.blog_url = "";
+        this.blog_name = "";
+        this.admin = false;
     }
 
     /**
@@ -217,7 +239,44 @@ public class User {
      * @param password - the new password for the user
      */
     public void setPassword(String password) {
-        this.password = password;
+        try {
+            // Create a new instance of the MessageDigest class
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            // Add the password and salt to the MessageDigest instance
+            md.update((password + password_salt).getBytes());
+            // Generate the hashed password
+            byte[] hashedPassword = md.digest();
+            // Convert the hashed password to a string
+            this.password = new String(hashedPassword);
+        } catch (NoSuchAlgorithmException e) {
+            // Handle the exception (e.g., log it or rethrow it)
+            ClipApplication.database.log("Error: " + e.getMessage(), "PASSWORD-HASHING-ERROR");
+        }
+    }
+
+    /**
+     * Checks if the provided plain text password matches the user's hashed password
+     * 
+     * @param plainTextPassword - the plain text password to check
+     * @return true if the password matches, false otherwise
+     */
+    public boolean checkPassword(String plainTextPassword) {
+        try {
+            // Create a new instance of the MessageDigest class
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            // Add the plain text password and salt to the MessageDigest instance
+            md.update((plainTextPassword + password_salt).getBytes());
+            // Generate the hashed password
+            byte[] hashedPassword = md.digest();
+            // Convert the hashed password to a string
+            String hashedPasswordString = new String(hashedPassword);
+            // Compare the generated hashed password with the user's hashed password
+            return hashedPasswordString.equals(password);
+        } catch (NoSuchAlgorithmException e) {
+            // Handle the exception (e.g., log it or rethrow it)
+            ClipApplication.database.log("Error: " + e.getMessage(), "PASSWORD-CHECK-ERROR");
+            return false; // Return false in case of an exception to ensure security
+        }
     }
 
     /**
