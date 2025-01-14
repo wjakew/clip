@@ -112,6 +112,9 @@ H6{
     --vaadin-input-field-value-color: var(--secondary-color);
     --vaadin-input-field-placeholder-color: var(--secondary-color);
     font-family: var(--font-family);
+    --vaadin-input-field-label-color: orange;
+    --vaadin-input-field-focused-label-color: orange;
+    --vaadin-input-field-hovered-label-color: orange;
 }
 .clip-editor-clip-type{
     --vaadin-input-field-border-color: var(--secondary-color);

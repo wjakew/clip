@@ -7,9 +7,14 @@ package com.jakubwawak.clip.frontend.windows;
 
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.jakubwawak.clip.ClipApplication;
+import com.jakubwawak.clip.frontend.RegisterPage;
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 
 /**
@@ -57,11 +62,11 @@ public class LoginWindow {
         passwordField.addClassName("clip-editor-title");
         passwordField.setWidth("100%");
 
-        loginButton = new Button("Login");
+        loginButton = new Button("Login",VaadinIcon.KEY.create());
         loginButton.addClassName("landing-page-button-small");
         loginButton.setWidth("100%");
 
-        registerButton = new Button("Register");
+        registerButton = new Button("Register",VaadinIcon.ROCKET.create(),this::registerButtonAction);
         registerButton.addClassName("landing-page-button-small-transparent");
         registerButton.setWidth("100%");
     }
@@ -90,5 +95,17 @@ public class LoginWindow {
         main_dialog.add(main_layout);
         main_dialog.setWidth(width);
         main_dialog.setHeight(height);
+    }
+
+    /**
+     * Function for registering button action
+     */
+    private void registerButtonAction(ClickEvent<Button> event){
+        if ( ClipApplication.database.isAccountCreationEnabled() ){
+            UI.getCurrent().navigate(RegisterPage.class);
+        }
+        else{
+            ClipApplication.showNotification("Account creation is disabled by administrator!");
+        }
     }
 }
