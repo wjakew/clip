@@ -97,6 +97,8 @@ public class PublicLibraryPage extends VerticalLayout {
         right_layout.setWidth("80%");
 
         right_layout.add(goBackButton,createClipButton);
+        goBackButton.getStyle().set("margin-right", "10px");
+        createClipButton.getStyle().set("margin-left", "10px");
 
         headerLandingBar.add(left_layout, center_layout, right_layout);
 

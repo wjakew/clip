@@ -25,7 +25,7 @@ import com.vaadin.flow.theme.Theme;
 public class ClipApplication extends SpringBootServletInitializer implements AppShellConfigurator{
 
 	public static String version = "0.0.1";
-	public static String build = "cla11012025REV01";
+	public static String build = "clap24022025REV01";
 
 	public static Properties properties;
 	public static Database database;

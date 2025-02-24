@@ -7,7 +7,6 @@ package com.jakubwawak.clip.frontend;
 
 import com.jakubwawak.clip.ClipApplication;
 import com.jakubwawak.clip.frontend.components.ClipEditor;
-import com.jakubwawak.clip.frontend.components.LoginStateComponent;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -30,7 +29,6 @@ import com.vaadin.flow.router.RouteAlias;
 @PageTitle("clip that words")
 public class LandingPage extends VerticalLayout {
 
-    LoginStateComponent loginStateComponent;
     Button createClipButton;
     Button goToClipLibrary;
 
@@ -63,7 +61,6 @@ public class LandingPage extends VerticalLayout {
      * Creates the buttons for the landing page
      */
     void createButtons() {
-        loginStateComponent = new LoginStateComponent();
         createClipButton = new Button("create clip", VaadinIcon.PLUS.create(), this::createClipAction);
         createClipButton.addClassName("landing-page-button-big");
         goToClipLibrary = new Button("library", VaadinIcon.BOOK.create());
@@ -101,9 +98,7 @@ public class LandingPage extends VerticalLayout {
 
         // Apply the spacing class to the buttons
         goToClipLibrary.addClassName("spacing");
-        loginStateComponent.addClassName("spacing");
-
-        right_layout.add(goToClipLibrary, loginStateComponent);
+        right_layout.add(goToClipLibrary);
 
         headerLandingBar.add(left_layout, center_layout, right_layout);
 

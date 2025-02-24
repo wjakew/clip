@@ -94,6 +94,9 @@ public class PublicViewerPage extends VerticalLayout implements HasUrlParameter<
 
         right_layout.add(returnToLandingPage, libraryButton);
 
+        returnToLandingPage.getStyle().set("margin-right", "10px");
+        libraryButton.getStyle().set("margin-left", "10px");
+
         headerLandingBar.add(left_layout, center_layout, right_layout);
 
         headerLandingBar.setWidthFull();
