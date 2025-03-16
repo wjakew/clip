@@ -2,12 +2,12 @@
 
 ## An opensource self-hosted pastebin alternative!
 
-![scr1.png](readme_resources\scr1.png)
+![[scr1.png](readme_resources\scr1.png)](https://github.com/wjakew/clip/blob/master/readme_resources/scr1.png)
 
 ## Overview
 The Clip Application is a web application designed for storing and sharing clips. It utilizes Spring Boot for the backend and Vaadin for the frontend, providing a seamless user experience.
 
-![scr2.png](readme_resources\scr2.png)
+![[scr2.png](readme_resources\scr2.png)](https://github.com/wjakew/clip/blob/master/readme_resources/scr2.png)
 
 ## Features
 - Store and share clips
